@@ -12,8 +12,8 @@ class LionTest {
 
     @ParameterizedTest
     @CsvSource({
-        "Самец, true",
-        "Самка, false"
+            "Самец, true",
+            "Самка, false"
     })
     void testDoesHaveMane(String sex, boolean expectedHasMane) throws Exception {
         Feline feline = mock(Feline.class);
@@ -25,10 +25,19 @@ class LionTest {
     void testGetKittens() throws Exception {
         Feline feline = mock(Feline.class);
         when(feline.getKittens()).thenReturn(1);
-        
+
         Lion lion = new Lion(feline, "Самец");
         assertEquals(1, lion.getKittens());
-        
+    }
+
+    @Test
+    void testGetKittensCallsFelineGetKittens() throws Exception {
+        Feline feline = mock(Feline.class);
+        when(feline.getKittens()).thenReturn(1);
+
+        Lion lion = new Lion(feline, "Самец");
+        lion.getKittens();
+
         verify(feline, times(1)).getKittens();
     }
 
@@ -36,11 +45,21 @@ class LionTest {
     void testGetFood() throws Exception {
         Feline feline = mock(Feline.class);
         when(feline.eatMeat()).thenReturn(List.of("Животные", "Птицы", "Рыба"));
-        
+
         Lion lion = new Lion(feline, "Самка");
         List<String> expectedFood = List.of("Животные", "Птицы", "Рыба");
-        
+
         assertEquals(expectedFood, lion.getFood());
+    }
+
+    @Test
+    void testGetFoodCallsFelineEatMeat() throws Exception {
+        Feline feline = mock(Feline.class);
+        when(feline.eatMeat()).thenReturn(List.of("Животные", "Птицы", "Рыба"));
+
+        Lion lion = new Lion(feline, "Самка");
+        lion.getFood();
+
         verify(feline, times(1)).eatMeat();
     }
 
